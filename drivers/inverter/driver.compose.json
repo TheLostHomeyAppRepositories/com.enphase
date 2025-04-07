@@ -1,5 +1,5 @@
 {
-  "$extends": "solaredge",
+  "$extends": "enphase",
   "name": {
     "en": "Inverter"
   },
