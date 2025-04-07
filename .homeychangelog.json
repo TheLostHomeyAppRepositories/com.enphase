@@ -25,5 +25,8 @@
   },
   "1.2.0": {
     "en": "Added kWh values to the Meter."
+  },
+  "0.1.0": {
+    "en": "First version!"
   }
 }
