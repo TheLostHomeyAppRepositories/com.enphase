@@ -1,50 +1,32 @@
-import SolarEdgeDevice from '../../lib/SolarEdgeDevice.mjs';
+import EnphaseDevice from '../../lib/EnphaseDevice.mjs';
 
-export default class SolarEdgeDeviceInverter extends SolarEdgeDevice {
+export default class EnphaseDeviceInverter extends EnphaseDevice {
 
   async onPoll() {
     await super.onPoll();
 
-    // Get Powerflow
-    const sitePowerflow = await this.api.getSitePowerflow({
-      siteId: this.getData().siteId,
-    });
-
-    if (typeof sitePowerflow.solarProduction?.currentPower === 'number') {
-      await this.setCapabilityValue('measure_power', Math.round(sitePowerflow.solarProduction.currentPower * 1000)).catch(this.error);
+    const siteData = await this.api.getSiteData();
+    const lifetimeEnergy = siteData?.module?.lifetime?.lifetimeEnergy?.value; // in Wh
+    console.log('lifetimeEnergy', lifetimeEnergy);
+    if (typeof lifetimeEnergy === 'number') {
+      await this.setCapabilityValue('meter_power', lifetimeEnergy / 1000)
+        .catch(err => this.error('Error setting meter_power:', err));
     }
 
-    // Get Energy Overview
-    const { energyProducedOverviewList } = await this.api.getSiteEnergyOverview({
-      siteId: this.getData().siteId,
-    });
-
-    for (const energyProducedOverviewListItem of Object.values(energyProducedOverviewList)) {
-      switch (energyProducedOverviewListItem.timePeriod) {
-        case 'LIFE_TIME': {
-          await this.setCapabilityValue('meter_power', energyProducedOverviewListItem.energy / 1000).catch(this.error);
-          break;
-        }
-        case 'LAST_YEAR': {
-          await this.setCapabilityValue('meter_power.year', energyProducedOverviewListItem.energy / 1000).catch(this.error);
-          break;
-        }
-        case 'LAST_MONTH': {
-          await this.setCapabilityValue('meter_power.month', energyProducedOverviewListItem.energy / 1000).catch(this.error);
-          break;
-        }
-        case 'LAST_DAY': {
-          await this.setCapabilityValue('meter_power.day', energyProducedOverviewListItem.energy / 1000).catch(this.error);
-          break;
-        }
-      }
+    const todayData = await this.api.getSiteToday();
+    const latestPower = todayData?.latest_power?.value; // in W
+    if (typeof latestPower === 'number') {
+      await this.setCapabilityValue('measure_power', latestPower)
+        .catch(err => this.error('Error setting measure_power:', err));
     }
 
-    if (sitePowerflow.solarProduction?.isActive) {
-      await this.setAvailable();
-    } else {
-      await this.setUnavailable();
+    const totalProductionToday = todayData?.stats?.[0]?.totals?.production;
+    console.log('totalProductionToday', totalProductionToday);
+    if (typeof totalProductionToday === 'number') {
+      await this.setCapabilityValue('meter_power.day', totalProductionToday / 1000)
+        .catch(err => this.error('Error setting meter_power.day:', err));
     }
+
   }
 
 };

@@ -1,10 +1,5 @@
-import SolarEdgeDriver from '../../lib/SolarEdgeDriver.mjs';
+import EnphaseDriver from '../../lib/EnphaseDriver.mjs';
 
-export default class SolarEdgeDriverInverter extends SolarEdgeDriver {
-
-  async onPairFilterSite({ api, site }) {
-    const sitePowerflow = await api.getSitePowerflow({ siteId: site.id });
-    return sitePowerflow?.solarProduction?.isActive === true;
-  }
+export default class EnphaseDriverInverter extends EnphaseDriver {
 
 };

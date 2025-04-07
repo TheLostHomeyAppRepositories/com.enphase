@@ -7,9 +7,7 @@
   "capabilities": [
     "measure_power",
     "meter_power",
-    "meter_power.day",
-    "meter_power.month",
-    "meter_power.year"
+    "meter_power.day"
   ],
   "capabilitiesOptions": {
     "measure_power": {
@@ -25,16 +23,6 @@
     "meter_power.day": {
       "title": {
         "en": "Generated Today"
-      }
-    },
-    "meter_power.month": {
-      "title": {
-        "en": "Generated This Month"
-      }
-    },
-    "meter_power.year": {
-      "title": {
-        "en": "Generated This Year"
       }
     }
   }
