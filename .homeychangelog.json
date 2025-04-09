@@ -31,5 +31,8 @@
   },
   "0.2.0": {
     "en": "Replaced images."
+  },
+  "0.3.0": {
+    "en": "Removed power measurement, because it was too unreliable."
   }
 }
