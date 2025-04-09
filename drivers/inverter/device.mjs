@@ -2,6 +2,15 @@ import EnphaseDevice from '../../lib/EnphaseDevice.mjs';
 
 export default class EnphaseDeviceInverter extends EnphaseDevice {
 
+  async onInit() {
+    await super.onInit();
+
+    // TODO: Remove after April 2025
+    if (this.hasCapability('measure_power')) {
+      await this.removeCapability('measure_power');
+    }
+  }
+
   async onPoll() {
     await super.onPoll();
 
