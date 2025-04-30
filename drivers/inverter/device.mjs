@@ -2,20 +2,13 @@ import EnphaseDevice from '../../lib/EnphaseDevice.mjs';
 
 export default class EnphaseDeviceInverter extends EnphaseDevice {
 
-  async onInit() {
-    await super.onInit();
-
-    // TODO: Remove after April 2025
-    if (this.hasCapability('measure_power')) {
-      await this.removeCapability('measure_power');
-    }
-  }
-
   async onPoll() {
     await super.onPoll();
 
-    const siteData = await this.api.getSiteData();
-    const todayData = await this.api.getSiteToday();
+    const { siteId } = this.getData();
+
+    const siteData = await this.api.getSiteData({ siteId });
+    const todayData = await this.api.getSiteToday({ siteId });
 
     // This has been commented out because the data did not correspond to the actual power generation :(
     // const measurePower = todayData?.latest_power?.value; // in W
