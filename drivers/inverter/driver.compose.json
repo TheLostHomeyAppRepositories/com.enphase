@@ -16,12 +16,16 @@
     },
     "meter_power": {
       "title": {
-        "en": "Generated Total"
+        "en": "Generated Total",
+        "nl": "Opgewekt Totaal",
+        "de": "Energieproduktion Total"
       }
     },
     "meter_power.day": {
       "title": {
-        "en": "Generated Today"
+        "en": "Generated Today",
+        "nl": "Opgewekt Vandaag",
+        "de": "Energieproduktion Heute"
       }
     }
   }
