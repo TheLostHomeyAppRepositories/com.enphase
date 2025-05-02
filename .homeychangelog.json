@@ -40,5 +40,8 @@
   },
   "0.5.0": {
     "en": "Added local API for Homey Pro, to read live energy production."
+  },
+  "0.5.1": {
+    "en": "Fixed an issue where local meter values would be zero."
   }
 }
