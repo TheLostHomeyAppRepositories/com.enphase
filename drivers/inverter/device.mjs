@@ -99,7 +99,7 @@ export default class EnphaseDeviceInverter extends EnphaseDevice {
           }).catch(err => this.error('Error Setting measure_power:', err));
         }
 
-        if (typeof wattHoursToday === 'number') {
+        if (typeof wattHoursToday === 'number' && wattHoursToday !== 0) {
           await Promise.resolve().then(async () => {
             if (!this.hasCapability('meter_power.day')) {
               await this.addCapability('meter_power.day');
@@ -109,7 +109,7 @@ export default class EnphaseDeviceInverter extends EnphaseDevice {
           }).catch(err => this.error('Error Setting meter_power.day:', err));
         }
 
-        if (typeof wattHoursLifetime === 'number') {
+        if (typeof wattHoursLifetime === 'number' && wattHoursLifetime !== 0) {
           await Promise.resolve().then(async () => {
             if (!this.hasCapability('meter_power')) {
               await this.addCapability('meter_power');
