@@ -43,5 +43,8 @@
   },
   "0.5.1": {
     "en": "Fixed an issue where local meter values would be zero."
+  },
+  "0.6.0": {
+    "en": "Added support for multiple variants of inverters."
   }
 }
