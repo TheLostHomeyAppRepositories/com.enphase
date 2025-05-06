@@ -70,7 +70,7 @@ export default class EnphaseDeviceInverter extends EnphaseDevice {
       });
     }
 
-    const res = await fetch(`https://${this.localAddress}/api/v1/production`, {
+    const res = await fetch(`https://${this.localAddress}/production.json?details=1`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -82,41 +82,33 @@ export default class EnphaseDeviceInverter extends EnphaseDevice {
 
     switch (res.status) {
       case 200: {
-        const {
-          wattsNow,
-          wattHoursToday,
-          wattHoursSevenDays,
-          wattHoursLifetime,
-        } = await res.json();
+        const body = await res.json();
 
-        if (typeof wattsNow === 'number') {
-          await Promise.resolve().then(async () => {
-            if (!this.hasCapability('measure_power')) {
-              await this.addCapability('measure_power');
+        if (Array.isArray(body.production)) {
+          const productionInverters = body.production.find(item => item.type === 'inverters');
+          if (productionInverters) {
+            if (typeof productionInverters.wNow === 'number') {
+              await Promise.resolve().then(async () => {
+                if (!this.hasCapability('measure_power')) {
+                  await this.addCapability('measure_power');
+                }
+
+                await this.setCapabilityValue('measure_power', productionInverters.wNow);
+              }).catch(err => this.error('Error Setting measure_power:', err));
             }
 
-            await this.setCapabilityValue('measure_power', wattsNow);
-          }).catch(err => this.error('Error Setting measure_power:', err));
-        }
+            // This is disabled, because it might interfere with the cloud values.
+            // We don't want jumping insights.
+            // if (typeof productionInverters.whLifetime === 'number') {
+            //   await Promise.resolve().then(async () => {
+            //     if (!this.hasCapability('meter_power')) {
+            //       await this.addCapability('meter_power');
+            //     }
 
-        if (typeof wattHoursToday === 'number' && wattHoursToday !== 0) {
-          await Promise.resolve().then(async () => {
-            if (!this.hasCapability('meter_power.day')) {
-              await this.addCapability('meter_power.day');
-            }
-
-            await this.setCapabilityValue('meter_power.day', wattHoursToday / 1000);
-          }).catch(err => this.error('Error Setting meter_power.day:', err));
-        }
-
-        if (typeof wattHoursLifetime === 'number' && wattHoursLifetime !== 0) {
-          await Promise.resolve().then(async () => {
-            if (!this.hasCapability('meter_power')) {
-              await this.addCapability('meter_power');
-            }
-
-            await this.setCapabilityValue('meter_power', wattHoursLifetime / 1000);
-          }).catch(err => this.error('Error Setting meter_power:', err));
+            //     await this.setCapabilityValue('meter_power', productionInverters.whLifetime / 1000);
+            //   }).catch(err => this.error('Error Setting meter_power:', err));
+            // }
+          }
         }
 
         break;
