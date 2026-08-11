@@ -1,5 +1,5 @@
 import type { DiscoveryResult, DiscoveryStrategy } from 'homey';
-import {isIP} from 'net';
+import { isIP } from 'net';
 import fetch from 'node-fetch';
 import * as https from 'node:https';
 import EnphaseDevice from '../../lib/EnphaseDevice.js';
