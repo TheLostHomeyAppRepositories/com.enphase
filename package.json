@@ -25,7 +25,7 @@
     "typescript-eslint": "8.56.1"
   },
   "dependencies": {
-    "@drenso/homey-log": "10.7000.0",
+    "@drenso/homey-log": "10.7100.0",
     "fast-xml-parser": "5.11.0",
     "node-fetch": "3.3.2",
     "source-map-support": "0.5.21"
