@@ -19,7 +19,13 @@ export default class EnphaseDriver extends Homey.Driver {
         await api.login();
         return true;
       } catch (err) {
-        this.error(`Login Error: ${(err as { message: unknown }).message}`);
+        const message: string | undefined = (err as { message?: string }).message;
+        this.error(`Login Error: ${message}`);
+
+        if (message) {
+          throw new Error(message);
+        }
+
         return false;
       }
     });

@@ -72,11 +72,11 @@ export default class EnphaseAPI {
 
   public async login({ username = this.username, password = this.password } = {}): Promise<void> {
     if (!username) {
-      throw new Error('Missing Username');
+      throw new Error('Missing username');
     }
 
     if (!password) {
-      throw new Error('Missing Password');
+      throw new Error('Missing password');
     }
 
     const res = await fetch('https://enlighten.enphaseenergy.com/login/login', {
@@ -90,7 +90,7 @@ export default class EnphaseAPI {
     });
 
     if (res.status !== 302) {
-      throw new Error('Invalid e-mail and/or password.');
+      throw new Error('Invalid e-mail and/or password. If you have 2FA enabled make sure to disable that in order to use this Homey app.');
     }
 
     this.cookies = res.headers.raw()['set-cookie'].map(cookie => cookie.split(';')[0]);
