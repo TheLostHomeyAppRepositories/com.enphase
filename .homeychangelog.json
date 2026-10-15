@@ -43,5 +43,8 @@
   },
   "0.9.1": {
     "en": "Bump compatibility constraint to match used features"
+  },
+  "0.9.2": {
+    "en": "Add notice about 2FA enabled accounts (those are not supported at this time)"
   }
 }
