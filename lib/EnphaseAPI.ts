@@ -90,7 +90,9 @@ export default class EnphaseAPI {
     });
 
     if (res.status !== 302) {
-      throw new Error('Invalid e-mail and/or password. If you have 2FA enabled make sure to disable that in order to use this Homey app.');
+      throw new Error(
+        'Invalid e-mail and/or password. If you have 2FA enabled make sure to disable that in order to use this Homey app.',
+      );
     }
 
     this.cookies = res.headers.raw()['set-cookie'].map(cookie => cookie.split(';')[0]);
